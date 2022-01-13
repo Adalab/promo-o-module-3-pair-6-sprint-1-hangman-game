@@ -3,13 +3,24 @@ import { useState } from 'react';
 
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [lastLetter, setLastLetter] = useState('');
+  const regularExp = /^[A-Za-z]+$/;
 
   const handleIncrement = (ev) => {
     ev.preventDefault();
 
     setNumberOfErrors(numberOfErrors + 1);
-  }
+  };
 
+  const handleChangeLetter = (ev) => {
+    const valueInputLetter = ev.currentTarget.value;
+
+    if (regularExp.test(valueInputLetter)) {
+      setLastLetter(valueInputLetter);
+    } else {
+      setLastLetter('');
+    }
+  };
 
   return (
     <div className="page">
@@ -54,8 +65,12 @@ function App() {
               type="text"
               name="last-letter"
               id="last-letter"
-            /><br />
-            <button type="button" onClick={handleIncrement}>Incrementar</button>
+              onChange={handleChangeLetter}
+            />
+            <br />
+            <button type="button" onClick={handleIncrement}>
+              Incrementar
+            </button>
           </form>
         </section>
         <section className={`dummy error-${numberOfErrors}`}>
@@ -74,7 +89,7 @@ function App() {
           <span className="error-1 line"></span>
         </section>
       </main>
-    </div >
+    </div>
   );
 }
 
