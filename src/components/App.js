@@ -2,9 +2,16 @@ import '../styles/App.scss';
 import { useState } from 'react';
 
 function App() {
+  // Variables
+  const regularExp = /^[A-Za-z]+$/;
+
+  // Variables estado
   const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState('');
-  const regularExp = /^[A-Za-z]+$/;
+  const [word, setWord] = useState('katakroker');
+  const [userLetters, setUserLetters] = useState([]);
+
+  console.log(lastLetter);
 
   const handleIncrement = (ev) => {
     ev.preventDefault();
@@ -17,9 +24,24 @@ function App() {
 
     if (regularExp.test(valueInputLetter)) {
       setLastLetter(valueInputLetter);
+      setUserLetters([...userLetters, valueInputLetter]);
+      // Comprobar si debemos pushear valueInputLetter o userLetters
     } else {
       setLastLetter('');
     }
+  };
+
+  const renderSolutionLetters = () => {
+    const wordLetters = word.split('');
+    // console.log(wordLetters);
+    // wordLetters.map((letter) => <li className="letters">{letter}</li>);
+    return wordLetters.map((letter, index) => {
+      return (
+        <li key={index} className="letter">
+          {letter}
+        </li>
+      );
+    });
   };
 
   return (
@@ -32,7 +54,8 @@ function App() {
           <div className="solution">
             <h2 className="title">Solución:</h2>
             <ul className="letters">
-              <li className="letter">k</li>
+              {renderSolutionLetters()}
+              {/* <li className="letter">k</li>
               <li className="letter">a</li>
               <li className="letter"></li>
               <li className="letter">a</li>
@@ -41,7 +64,7 @@ function App() {
               <li className="letter"></li>
               <li className="letter">k</li>
               <li className="letter">e</li>
-              <li className="letter">r</li>
+              <li className="letter">r</li> */}
             </ul>
           </div>
           <div className="error">
@@ -65,6 +88,7 @@ function App() {
               type="text"
               name="last-letter"
               id="last-letter"
+              value={lastLetter}
               onChange={handleChangeLetter}
             />
             <br />
